@@ -17,6 +17,7 @@ class MainApp extends StatelessWidget {
         colorScheme: ColorScheme.fromSeed(
           primary: Color(0xFF4997CF),
           secondary: Color(0xFF95C1E4),
+          outline: Color(0xFFE7ECEF),
           seedColor: Color(0xFF4997CF),
         ),
         splashColor: Color(0xFF4997CF),
