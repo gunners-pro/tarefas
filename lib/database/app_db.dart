@@ -17,7 +17,14 @@ class AppDatabase {
     final dbPath = await getDatabasesPath();
     final path = p.join(dbPath, filePath);
 
-    return await openDatabase(path, version: 1, onCreate: _createDB);
+    return await openDatabase(
+      path,
+      version: 1,
+      onOpen: (db) async {
+        await db.execute("DROP TABLE IF EXISTS groups");
+        await _createDB(db, 1);
+      },
+    );
   }
 
   Future _createDB(Database db, int version) async {
