@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:tarefas/screens/home_screen.dart';
 
 void main() {
   runApp(const MainApp());
@@ -20,7 +21,8 @@ class MainApp extends StatelessWidget {
         splashColor: Color(0xFF4997CF),
         useMaterial3: true,
       ),
-      home: Scaffold(body: Center(child: Text('Olá Mundo!'))),
+      initialRoute: "/",
+      routes: {"/": (context) => HomeScreen()},
     );
   }
 }
