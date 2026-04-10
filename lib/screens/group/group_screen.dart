@@ -3,6 +3,12 @@ import 'package:flutter/material.dart';
 class GroupScreen extends StatelessWidget {
   const GroupScreen({super.key});
 
+  //   particular - 0xfff554bc
+  // ux/ui - 0xff2ed62a
+  // Escrever - 0xffb859e6
+  // Meditar - 0xffffc02e
+  // receitas - 0xff4096d6
+
   @override
   Widget build(BuildContext context) {
     var groups = [
