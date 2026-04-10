@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:tarefas/screens/group/group_screen.dart';
 import 'package:tarefas/screens/home/home_screen.dart';
 
 void main() {
@@ -23,8 +24,11 @@ class MainApp extends StatelessWidget {
         splashColor: Color(0xFF4997CF),
         useMaterial3: true,
       ),
-      initialRoute: "/",
-      routes: {"/": (context) => HomeScreen()},
+      initialRoute: "/group",
+      routes: {
+        "/": (context) => HomeScreen(),
+        "/group": (context) => GroupScreen(),
+      },
     );
   }
 }
