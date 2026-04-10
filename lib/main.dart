@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:tarefas/screens/home_screen.dart';
+import 'package:tarefas/screens/home/home_screen.dart';
 
 void main() {
   runApp(const MainApp());
@@ -15,7 +15,8 @@ class MainApp extends StatelessWidget {
       title: "Tarefas",
       theme: ThemeData(
         colorScheme: ColorScheme.fromSeed(
-          primary: Color(0xFF95C1E4),
+          primary: Color(0xFF4997CF),
+          secondary: Color(0xFF95C1E4),
           seedColor: Color(0xFF4997CF),
         ),
         splashColor: Color(0xFF4997CF),
