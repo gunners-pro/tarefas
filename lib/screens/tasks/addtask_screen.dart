@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_holo_date_picker/flutter_holo_date_picker.dart';
 
 enum Priority { low, medium, high }
 
@@ -20,20 +21,23 @@ class _AddTaskScreenState extends State<AddTaskScreen> {
         centerTitle: true,
         elevation: 1,
       ),
-      body: Padding(
-        padding: const EdgeInsets.all(18.0),
-        child: Column(
-          children: [
-            _TextFieldMultiLine(),
-            _PrioritySelector(
-              selected: selected,
-              onChanged: (value) {
-                setState(() {
-                  selected = value;
-                });
-              },
-            ),
-          ],
+      body: SingleChildScrollView(
+        child: Padding(
+          padding: const EdgeInsets.all(18.0),
+          child: Column(
+            children: [
+              _TextFieldMultiLine(),
+              _PrioritySelector(
+                selected: selected,
+                onChanged: (value) {
+                  setState(() {
+                    selected = value;
+                  });
+                },
+              ),
+              _DatePickerSelector(),
+            ],
+          ),
         ),
       ),
     );
@@ -150,6 +154,55 @@ class _PrioritySelector extends StatelessWidget {
                 ),
               );
             }).toList(),
+          ),
+        ],
+      ),
+    );
+  }
+}
+
+class _DatePickerSelector extends StatelessWidget {
+  const _DatePickerSelector();
+
+  @override
+  Widget build(BuildContext context) {
+    final today = DateTime.now();
+    final lastDate = DateTime(today.year, today.month + 6, today.day);
+
+    return Container(
+      padding: const EdgeInsets.all(16),
+      margin: EdgeInsets.only(top: 16),
+      decoration: BoxDecoration(
+        color: Theme.of(context).colorScheme.outline,
+        borderRadius: BorderRadius.circular(12),
+      ),
+      child: Column(
+        children: [
+          Row(
+            children: [
+              Icon(
+                Icons.edit_calendar_outlined,
+                color: Theme.of(context).colorScheme.primary,
+              ),
+              const SizedBox(width: 10),
+              const Text(
+                "Data",
+                style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+              ),
+            ],
+          ),
+          const SizedBox(height: 12),
+          DatePickerWidget(
+            dateFormat: "dd-MMM-yyyy",
+            firstDate: today,
+            lastDate: lastDate,
+            locale: DateTimePickerLocale.pt_br,
+            pickerTheme: DateTimePickerTheme(
+              backgroundColor: Colors.transparent,
+              itemHeight: 25,
+              pickerHeight: 100,
+              dividerColor: Colors.grey,
+            ),
           ),
         ],
       ),
