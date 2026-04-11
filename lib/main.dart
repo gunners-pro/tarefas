@@ -1,9 +1,18 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:tarefas/blocs/group/group_blocs.dart';
+import 'package:tarefas/blocs/group/group_events.dart';
+import 'package:tarefas/repositories/group_repository.dart';
 import 'package:tarefas/screens/group/group_screen.dart';
 import 'package:tarefas/screens/home/home_screen.dart';
 
 void main() {
-  runApp(const MainApp());
+  runApp(
+    BlocProvider(
+      create: (_) => GroupBloc(GroupRepository())..add(LoadGroups()),
+      child: const MainApp(),
+    ),
+  );
 }
 
 class MainApp extends StatelessWidget {
@@ -24,7 +33,7 @@ class MainApp extends StatelessWidget {
         splashColor: Color(0xFF4997CF),
         useMaterial3: true,
       ),
-      initialRoute: "/group",
+      initialRoute: "/",
       routes: {
         "/": (context) => HomeScreen(),
         "/group": (context) => GroupScreen(),

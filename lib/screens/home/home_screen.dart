@@ -1,5 +1,9 @@
 import 'package:date_picker_timeline/date_picker_timeline.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_svg/svg.dart';
+import 'package:tarefas/blocs/group/group_blocs.dart';
+import 'package:tarefas/blocs/group/group_states.dart';
 import 'package:tarefas/screens/home/top_bar.dart';
 
 class HomeScreen extends StatelessWidget {
@@ -58,7 +62,7 @@ class HomeScreen extends StatelessWidget {
                     ),
                   ),
                   TextButton(
-                    onPressed: () {},
+                    onPressed: () => Navigator.of(context).pushNamed("/group"),
                     child: Row(
                       children: [
                         Text("Ver todos"),
@@ -69,27 +73,94 @@ class HomeScreen extends StatelessWidget {
                 ],
               ),
               SizedBox(height: 10.0),
-              SizedBox(
-                width: double.infinity,
-                height: 150,
-                child: ListView.builder(
-                  scrollDirection: Axis.horizontal,
-                  itemCount: 4,
-                  itemBuilder: (ctx, index) {
-                    return GestureDetector(
-                      onTap: () {},
-                      child: Container(
-                        width: 160,
-                        margin: EdgeInsets.only(right: 10),
-                        decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(12),
-                          color: Theme.of(context).colorScheme.outline,
-                        ),
-                        child: Text("Olá"),
+              BlocBuilder<GroupBloc, GroupState>(
+                builder: (context, state) {
+                  if (state is GroupLoading) {
+                    return Center(child: CircularProgressIndicator());
+                  }
+
+                  if (state is GroupsLoaded) {
+                    final groups = state.groups;
+
+                    return SizedBox(
+                      width: double.infinity,
+                      height: 150,
+                      child: ListView.builder(
+                        scrollDirection: Axis.horizontal,
+                        itemCount: groups.length,
+                        itemBuilder: (ctx, index) {
+                          return Container(
+                            width: 160,
+                            margin: EdgeInsets.only(right: 10),
+                            child: InkWell(
+                              onTap: () {},
+                              splashColor: Colors.grey[400],
+                              borderRadius: BorderRadius.circular(12),
+                              child: Ink(
+                                padding: EdgeInsets.all(12),
+                                decoration: BoxDecoration(
+                                  borderRadius: BorderRadius.circular(12),
+                                  color: Theme.of(context).colorScheme.outline,
+                                ),
+                                child: Column(
+                                  mainAxisAlignment:
+                                      MainAxisAlignment.spaceEvenly,
+                                  children: [
+                                    SvgPicture.asset(
+                                      groups[index].imageSvg,
+                                      width: 60,
+                                      height: 60,
+                                      fit: BoxFit.contain,
+                                    ),
+                                    Row(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.spaceBetween,
+                                      children: [
+                                        Column(
+                                          crossAxisAlignment:
+                                              CrossAxisAlignment.start,
+                                          children: [
+                                            Text(
+                                              groups[index].title.toUpperCase(),
+                                              style: TextStyle(
+                                                fontWeight: FontWeight.w800,
+                                                fontSize: 17,
+                                                color: Color(
+                                                  int.parse(
+                                                    groups[index].color,
+                                                  ),
+                                                ),
+                                              ),
+                                            ),
+                                            Text(
+                                              "Total ${groups[index].taskCount}",
+                                              style: TextStyle(
+                                                color: Colors.grey[600],
+                                              ),
+                                            ),
+                                          ],
+                                        ),
+                                        Icon(
+                                          Icons.keyboard_double_arrow_right,
+                                          color: Color(
+                                            int.parse(groups[index].color),
+                                          ),
+                                          size: 30,
+                                        ),
+                                      ],
+                                    ),
+                                  ],
+                                ),
+                              ),
+                            ),
+                          );
+                        },
                       ),
                     );
-                  },
-                ),
+                  }
+
+                  return Center(child: Text("Nenhum grupo encontrado"));
+                },
               ),
             ],
           ),
