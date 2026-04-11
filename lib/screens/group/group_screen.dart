@@ -2,10 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:tarefas/blocs/group/group_blocs.dart';
-import 'package:tarefas/blocs/group/group_events.dart';
 import 'package:tarefas/blocs/group/group_states.dart';
 import 'package:tarefas/models/group.dart';
-import 'package:tarefas/repositories/group_repository.dart';
 
 class GroupScreen extends StatelessWidget {
   const GroupScreen({super.key});
@@ -18,72 +16,66 @@ class GroupScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return BlocProvider(
-      create: (_) => GroupBloc(GroupRepository())..add(LoadGroups()),
-      child: Scaffold(
-        appBar: AppBar(
-          title: Text("Grupos"),
-          actions: [
-            IconButton(
-              icon: Icon(Icons.filter_list, size: 26),
-              onPressed: () {},
-            ),
-          ],
-          centerTitle: true,
-          elevation: 1,
-        ),
-        body: BlocBuilder<GroupBloc, GroupState>(
-          builder: (context, state) {
-            if (state is GroupLoading) {
-              return Center(child: CircularProgressIndicator());
-            }
+    return Scaffold(
+      appBar: AppBar(
+        title: Text("Grupos"),
+        actions: [
+          IconButton(icon: Icon(Icons.filter_list, size: 26), onPressed: () {}),
+        ],
+        centerTitle: true,
+        elevation: 1,
+      ),
+      body: BlocBuilder<GroupBloc, GroupState>(
+        builder: (context, state) {
+          if (state is GroupLoading) {
+            return Center(child: CircularProgressIndicator());
+          }
 
-            if (state is GroupsLoaded) {
-              final groups = state.groups;
+          if (state is GroupsLoaded) {
+            final groups = state.groups;
 
-              return GridView.count(
-                crossAxisCount: 2,
-                crossAxisSpacing: 12,
-                mainAxisSpacing: 12,
-                padding: EdgeInsets.all(16),
-                children: [
-                  InkWell(
-                    splashColor: Theme.of(context).colorScheme.secondary,
-                    borderRadius: BorderRadius.circular(12),
-                    onTap: () {},
-                    child: Ink(
-                      decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(12),
-                        color: Colors.blue[100],
-                      ),
-                      child: Center(
-                        child: Column(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: [
-                            Icon(Icons.add, size: 40, color: Colors.blue),
-                            Text(
-                              "Novo grupo",
-                              style: TextStyle(
-                                fontSize: 18,
-                                fontWeight: FontWeight.bold,
-                                color: Colors.blue[400],
-                              ),
+            return GridView.count(
+              crossAxisCount: 2,
+              crossAxisSpacing: 12,
+              mainAxisSpacing: 12,
+              padding: EdgeInsets.all(16),
+              children: [
+                InkWell(
+                  splashColor: Theme.of(context).colorScheme.secondary,
+                  borderRadius: BorderRadius.circular(12),
+                  onTap: () {},
+                  child: Ink(
+                    decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(12),
+                      color: Colors.blue[100],
+                    ),
+                    child: Center(
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          Icon(Icons.add, size: 40, color: Colors.blue),
+                          Text(
+                            "Novo grupo",
+                            style: TextStyle(
+                              fontSize: 18,
+                              fontWeight: FontWeight.bold,
+                              color: Colors.blue[400],
                             ),
-                          ],
-                        ),
+                          ),
+                        ],
                       ),
                     ),
                   ),
-                  ...groups.map((group) {
-                    return _gridViewItemGroup(context, group);
-                  }),
-                ],
-              );
-            }
+                ),
+                ...groups.map((group) {
+                  return _gridViewItemGroup(context, group);
+                }),
+              ],
+            );
+          }
 
-            return Center(child: Text("Nenhum grupo encontrado"));
-          },
-        ),
+          return Center(child: Text("Nenhum grupo encontrado"));
+        },
       ),
     );
   }
