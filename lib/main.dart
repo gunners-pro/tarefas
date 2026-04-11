@@ -4,7 +4,7 @@ import 'package:tarefas/blocs/group/group_blocs.dart';
 import 'package:tarefas/blocs/group/group_events.dart';
 import 'package:tarefas/repositories/group_repository.dart';
 import 'package:tarefas/screens/group/group_screen.dart';
-import 'package:tarefas/screens/home/home_screen.dart';
+import 'package:tarefas/screens/navigation/mainnavigation_screen.dart';
 
 void main() {
   runApp(
@@ -35,7 +35,7 @@ class MainApp extends StatelessWidget {
       ),
       initialRoute: "/",
       routes: {
-        "/": (context) => HomeScreen(),
+        "/": (context) => const MainNavigationScreen(),
         "/group": (context) => GroupScreen(),
       },
     );
