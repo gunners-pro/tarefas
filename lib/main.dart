@@ -5,8 +5,12 @@ import 'package:tarefas/blocs/group/group_events.dart';
 import 'package:tarefas/repositories/group_repository.dart';
 import 'package:tarefas/screens/group/group_screen.dart';
 import 'package:tarefas/screens/navigation/mainnavigation_screen.dart';
+import 'package:tarefas/services/notification_service.dart';
 
-void main() {
+void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  await NotificationService.init();
+
   runApp(
     BlocProvider(
       create: (_) => GroupBloc(GroupRepository())..add(LoadGroups()),

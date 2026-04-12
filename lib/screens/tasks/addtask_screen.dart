@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_holo_date_picker/flutter_holo_date_picker.dart';
+import 'package:tarefas/services/notification_service.dart';
 
 enum Priority { low, medium, high }
 
@@ -36,6 +37,7 @@ class _AddTaskScreenState extends State<AddTaskScreen> {
                 },
               ),
               _DatePickerSelector(),
+              _NotificationSelector(),
             ],
           ),
         ),
@@ -203,6 +205,37 @@ class _DatePickerSelector extends StatelessWidget {
               pickerHeight: 100,
               dividerColor: Colors.grey,
             ),
+          ),
+        ],
+      ),
+    );
+  }
+}
+
+class _NotificationSelector extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      padding: const EdgeInsets.all(16),
+      margin: EdgeInsets.only(top: 16),
+      decoration: BoxDecoration(
+        color: Theme.of(context).colorScheme.outline,
+        borderRadius: BorderRadius.circular(12),
+      ),
+      child: Column(
+        children: [
+          Row(
+            children: [
+              Icon(
+                Icons.edit_notifications_outlined,
+                color: Theme.of(context).colorScheme.primary,
+              ),
+              const SizedBox(width: 10),
+              const Text(
+                "Notificações",
+                style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+              ),
+            ],
           ),
         ],
       ),
