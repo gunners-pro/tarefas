@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_holo_date_picker/flutter_holo_date_picker.dart';
-import 'package:tarefas/services/notification_service.dart';
 
 enum Priority { low, medium, high }
 
@@ -212,7 +211,14 @@ class _DatePickerSelector extends StatelessWidget {
   }
 }
 
-class _NotificationSelector extends StatelessWidget {
+class _NotificationSelector extends StatefulWidget {
+  @override
+  State<_NotificationSelector> createState() => _NotificationSelectorState();
+}
+
+class _NotificationSelectorState extends State<_NotificationSelector> {
+  bool wantNotification = true;
+
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -222,7 +228,8 @@ class _NotificationSelector extends StatelessWidget {
         color: Theme.of(context).colorScheme.outline,
         borderRadius: BorderRadius.circular(12),
       ),
-      child: Column(
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
           Row(
             children: [
@@ -232,10 +239,20 @@ class _NotificationSelector extends StatelessWidget {
               ),
               const SizedBox(width: 10),
               const Text(
-                "Notificações",
+                "Notificação",
                 style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
               ),
             ],
+          ),
+          Switch(
+            value: wantNotification,
+            onChanged: (value) {
+              setState(() {
+                wantNotification = value;
+              });
+            },
+            inactiveTrackColor: Colors.white,
+            inactiveThumbColor: Theme.of(context).colorScheme.secondary,
           ),
         ],
       ),
