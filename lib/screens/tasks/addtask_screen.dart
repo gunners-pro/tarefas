@@ -1,5 +1,9 @@
+import 'package:choice/inline.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_holo_date_picker/flutter_holo_date_picker.dart';
+import 'package:tarefas/blocs/group/group_blocs.dart';
+import 'package:tarefas/blocs/group/group_states.dart';
 
 enum Priority { low, medium, high }
 
@@ -37,6 +41,7 @@ class _AddTaskScreenState extends State<AddTaskScreen> {
               ),
               _DatePickerSelector(),
               _NotificationSelector(),
+              _GroupChoice(),
             ],
           ),
         ),
@@ -253,6 +258,91 @@ class _NotificationSelectorState extends State<_NotificationSelector> {
             },
             inactiveTrackColor: Colors.white,
             inactiveThumbColor: Theme.of(context).colorScheme.secondary,
+          ),
+        ],
+      ),
+    );
+  }
+}
+
+class _GroupChoice extends StatelessWidget {
+  const _GroupChoice();
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      padding: const EdgeInsets.all(16),
+      margin: EdgeInsets.only(top: 16),
+      decoration: BoxDecoration(
+        color: Theme.of(context).colorScheme.outline,
+        borderRadius: BorderRadius.circular(12),
+      ),
+      child: Column(
+        spacing: 16,
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Row(
+            children: [
+              Icon(
+                Icons.folder_outlined,
+                color: Theme.of(context).colorScheme.primary,
+              ),
+              const SizedBox(width: 10),
+              const Text(
+                "Grupo",
+                style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+              ),
+            ],
+          ),
+          BlocBuilder<GroupBloc, GroupState>(
+            builder: (context, state) {
+              if (state is GroupLoading) {
+                return Center(child: CircularProgressIndicator());
+              }
+              if (state is GroupsLoaded) {
+                var groups = state.groups;
+
+                return InlineChoice(
+                  itemCount: groups.length,
+                  itemBuilder: (selection, index) {
+                    var labelColor = selection.selected(groups[index])
+                        ? Colors.white
+                        : Colors.black;
+                    return Theme(
+                      data: Theme.of(
+                        context,
+                      ).copyWith(splashFactory: NoSplash.splashFactory),
+                      child: ChoiceChip(
+                        label: Text(groups[index].title.toUpperCase()),
+                        selected: selection.selected(groups[index]),
+                        onSelected: selection.onSelected(groups[index]),
+                        color: WidgetStateColor.fromMap(
+                          <WidgetStatesConstraint, Color>{
+                            WidgetState.selected: Color(
+                              int.parse(groups[index].color),
+                            ),
+                            WidgetState.pressed: Color(
+                              int.parse(groups[index].color),
+                            ),
+                            WidgetState.any: Colors.transparent,
+                          },
+                        ),
+                        checkmarkColor: Colors.white,
+                        labelPadding: EdgeInsets.symmetric(horizontal: 4),
+                        labelStyle: TextStyle(color: labelColor),
+                      ),
+                    );
+                  },
+                  listBuilder: ChoiceList.createWrapped(
+                    padding: EdgeInsets.zero,
+                    spacing: 6,
+                    runSpacing: 0,
+                  ),
+                );
+              }
+
+              return Center(child: Text("Nenhum grupo encontrado"));
+            },
           ),
         ],
       ),
