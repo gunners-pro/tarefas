@@ -42,6 +42,8 @@ class _AddTaskScreenState extends State<AddTaskScreen> {
               _DatePickerSelector(),
               _NotificationSelector(),
               _GroupChoice(),
+              const SizedBox(height: 16),
+              _ButtonCreateTask(),
             ],
           ),
         ),
@@ -345,6 +347,39 @@ class _GroupChoice extends StatelessWidget {
             },
           ),
         ],
+      ),
+    );
+  }
+}
+
+class _ButtonCreateTask extends StatelessWidget {
+  const _ButtonCreateTask();
+
+  @override
+  Widget build(BuildContext context) {
+    final size = MediaQuery.of(context).size;
+
+    return InkWell(
+      borderRadius: BorderRadius.circular(12),
+      splashColor: Theme.of(context).colorScheme.secondary,
+      onTap: () {},
+      child: Ink(
+        width: size.width,
+        decoration: BoxDecoration(
+          color: Theme.of(context).colorScheme.primary,
+          borderRadius: BorderRadius.circular(12),
+        ),
+        padding: const EdgeInsets.all(16),
+        child: Row(
+          spacing: 8,
+          children: [
+            Icon(Icons.add_box_outlined, color: Colors.white),
+            Text(
+              "Adicionar Tarefa",
+              style: TextStyle(color: Colors.white, fontSize: 16),
+            ),
+          ],
+        ),
       ),
     );
   }
