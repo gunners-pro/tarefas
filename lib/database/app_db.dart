@@ -29,45 +29,49 @@ class AppDatabase {
 
   Future _createDB(Database db, int version) async {
     await db.execute('''
-  CREATE TABLE groups (
+    CREATE TABLE groups (
     id INTEGER PRIMARY KEY AUTOINCREMENT,
     title TEXT NOT NULL,
     color TEXT NOT NULL,
-    imageSvg TEXT NOT NULL,
-    taskCount INTEGER NOT NULL DEFAULT 0
-  )
-''');
+    imageSvg TEXT NOT NULL
+    )
+    ''');
+
+    await db.execute('''
+    CREATE TABLE IF NOT EXISTS tasks (
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    description TEXT NOT NULL,
+    date TEXT,
+    groupId INTEGER NOT NULL,
+    FOREIGN KEY (groupId) REFERENCES groups(id)
+    )
+    ''');
 
     // Seed inicial
     await db.insert('groups', {
       'title': 'escrever',
       'color': '0xffb859e6',
       'imageSvg': 'assets/icons/escrever.svg',
-      'taskCount': 0,
     });
     await db.insert('groups', {
       'title': 'meditar',
       'color': '0xffffc02e',
       'imageSvg': 'assets/icons/meditar.svg',
-      'taskCount': 0,
     });
     await db.insert('groups', {
       'title': 'particular',
       'color': '0xfff554bc',
       'imageSvg': 'assets/icons/particular.svg',
-      'taskCount': 0,
     });
     await db.insert('groups', {
       'title': 'receita',
       'color': '0xff4096d6',
       'imageSvg': 'assets/icons/recipe.svg',
-      'taskCount': 0,
     });
     await db.insert('groups', {
       'title': 'ux ui',
       'color': '0xff2ed62a',
       'imageSvg': 'assets/icons/uxui.svg',
-      'taskCount': 0,
     });
   }
 }

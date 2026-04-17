@@ -10,7 +10,7 @@ class GroupBloc extends Bloc<GroupEvent, GroupState> {
     on<LoadGroups>((event, emit) async {
       emit(GroupLoading());
       try {
-        final groups = await repository.getAll();
+        final groups = await repository.getGroupsWithTaskCount();
         emit(GroupsLoaded(groups));
       } catch (e) {
         emit(GroupError("Erro ao carregar grupos"));
